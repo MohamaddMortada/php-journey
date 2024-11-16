@@ -1,11 +1,9 @@
 <?php
 class user{
-    public $username;
     public $email;
     public $password;
 
-    public function __construct($username, $email, $password){
-        $this->username = $username;
+    public function __construct($email, $password){
         $this->email = $email;
         $this->password = $password;
     }
@@ -39,6 +37,26 @@ class user{
             return false;
         }
         return $hasUpper && $hasLower && $hasSpecial;
+    }
+
+    public static function validate_email($email){
+    
+        $counterAt=0;
+        $counterCom=0;
+        
+        $counterAt = substr_count($email, '@');
+        $counterCom = substr_count($email, '.');
+
+        if($counterAt!==1 || $counterCom<1)
+        return false;
+    return true;
+
+    }
+    public function copy_with($email = null, $password = null) {
+        return new User(
+            $email ?? $this->email,
+            $password ?? $this->password
+        );
     }
 }
 ?>
