@@ -33,4 +33,32 @@ class LinkedList{
         $current->next = $newNode;
     }
 }
+
+function checkTwoVowels($node){
+    if ($node === null) {
+        return;
+    }
+
+    $vowels = ['a','e','i','o','u'];
+    $counter = 0;
+
+    foreach ($vowels as $vowel){
+        $counter += substr_count(strtolower($node->data), $vowel);
+    }
+
+    if ($counter >= 2){
+        echo $node->data . "\n";
+    }
+
+    checkTwoVowels($node->next);
+}
+
+$linkedList = new LinkedList();
+
+$linkedList->push("mhmd");
+$linkedList->push("nabiha");
+$linkedList->push("taha");
+$linkedList->push("charbel");
+
+checkTwoVowels($linkedList->head);
 ?>
