@@ -1,5 +1,10 @@
 <?php
 
+header("Content-Type: application/json");
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Allow-Headers: Content-Type");
+
 class Node{
     public $data;     
     public $next;      
@@ -61,4 +66,26 @@ $linkedList->push("taha");
 $linkedList->push("charbel");
 
 checkTwoVowels($linkedList->head);
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $data = json_decode(file_get_contents("php://input"), true);
+
+    if (isset($data['strings']) && is_array($data['strings'])) {
+        $linkedList = new LinkedList();
+
+        foreach ($data['strings'] as $string) {
+            $linkedList->push($string);
+        }
+
+        $result = [];
+        checkTwoVowels($linkedList->head, $result);
+
+        echo json_encode(["result" => $result]);
+    } else {
+        echo json_encode(["error" => "Invalid input. Provide an array of strings in 'strings'."]);
+    }
+} else {
+    echo json_encode(["error" => "Invalid request method. Use POST."]);
+}
+
 ?>

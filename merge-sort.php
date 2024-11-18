@@ -1,4 +1,9 @@
 <?php
+header("Content-Type: application/json");
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Allow-Headers: Content-Type");
+
 function merge($left,$right){
     $array=[];
     $i=0;
@@ -44,4 +49,18 @@ function mergeSort($array){
 }
 $array=[5,3,7,4,8,2,1];
 print_r(mergeSort($array));
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $data = json_decode(file_get_contents("php://input"), true);
+
+    if (isset($data['array']) && is_array($data['array'])) {
+        $sortedArray = mergeSort($data['array']);
+        echo json_encode(["sortedArray" => $sortedArray]);
+    } else {
+        echo json_encode(["error" => "Invalid input. Provide an array in the 'array' parameter."]);
+    }
+} else {
+    echo json_encode(["error" => "Invalid request method. Use POST."]);
+}
 ?>
